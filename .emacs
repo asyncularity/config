@@ -1,15 +1,21 @@
 ;;$Id: .emacs,v 1.00 2018/10/17 21:45:17 dmorris Exp $
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/jdee-2.4.1/lisp"))
 
-(require 'jde-autoload)
-(require 'uniquify)
-(require 'align)
-(require 'id)
+(package-initialize)
 (require 'cl)
-(require 'helm)
-(require 'helm-projectile)
-(require 'helm-mode)
+(require 'package)
+
+(setq my-home (expand-file-name (concat "~" (or (getenv "SUDO_USER") (getenv "USER")))))
+(setq my-emacsd (concat my-home "/.emacs.d/"))
+(setq load-path (cons (concat my-emacsd "/lisp") load-path))
+(setq load-path (cons (concat my-emacsd "/lisp/jdee-2.4.1/lisp") load-path))
+
+(require 'id)
+(require 'align)
+(require 'jde-autoload)
+
+;; load required packages from elpa
+(require 'load-packages)
+(load-elpa-packages)
 
 (if (boundp 'gtags) (require 'gtags))
 (autoload 'javascript-mode "javascript" nil t)
@@ -32,11 +38,9 @@
 
 ;;; KEYBINDINGS ;;;
 (define-key global-map [?\C-n] 'Control-X-prefix)
-(define-key global-map [?\C-f] 'clipboard-kill-ring-save)
-(define-key global-map [?\M-f] 'clipboard-kill-region)
-(if nowindows 
-    (define-key global-map [?\C-y] 'yank) 
-  (define-key global-map [?\C-y] 'x-clipboard-yank))
+(define-key global-map [?\C-f] 'kill-ring-save)
+(define-key global-map [?\M-f] 'kill-region)
+(define-key global-map [?\C-y] 'yank) 
 (define-key global-map [?\M-y] 'yank)
 (define-key global-map [?\M-k] 'kill-region)
 
@@ -54,7 +58,7 @@
 
 ;; Search
 (define-key global-map [?\C-s] 'isearch-forward)
-(define-key global-map [?\M-s] 'isearch-forward-regexp)
+(define-key global-map [?\M-s] 'helm-projectile-grep)
 
 ;; other stuff
 (define-key global-map [?\C-c?\C-c]  'comment-region)
@@ -424,17 +428,45 @@
      '(zmacs-region ((t (:foreground "green" :background "darkslategrey"))))))
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(dabbrev-case-fold-search nil)
  '(global-font-lock-mode 1 nil (font-lock))
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(jde-gen-comments nil)
  '(menu-bar-mode nil)
- ;; '(partial-completion-mode t nil (complete))
+ '(package-selected-packages (quote (helm-projectile helm go-mode)))
  '(tool-bar-mode nil)
  '(transient-mark-mode 1)
- '(visible-bell t)
- '(dabbrev-case-fold-search nil))
+ '(visible-bell t))
 
 (message "(* emacs *)")
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(blue ((t (:foreground "skyblue"))))
+ '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
+ '(font-lock-comment-face ((t (:foreground "Grey40"))))
+ '(font-lock-constant-face ((((class color) (background dark)) (:foreground "#ABC"))))
+ '(font-lock-doc-face ((t (:foreground "Grey40"))))
+ '(font-lock-function-name-face ((t (:foreground "skyblue"))))
+ '(font-lock-keyword-face ((t (:foreground "#6633cc"))))
+ '(font-lock-preprocessor-face ((t (:foreground "lightgreen"))))
+ '(font-lock-string-face ((t (:foreground "#77BB99"))))
+ '(font-lock-type-face ((t (:foreground "CornflowerBlue"))))
+ '(font-lock-variable-name-face ((t (:foreground "skyblue"))))
+ '(font-lock-warning-face ((t (:foreground "red"))))
+ '(green ((t (:foreground "SeaGreen"))))
+ '(highlight ((t (:foreground "White" :background "SlateGrey"))))
+ '(isearch ((t (:foreground "LightSlateBlue" :background "navyblue"))))
+ '(paren-match ((t (:background "grey35"))))
+ '(region ((((class color) (background dark)) (:foreground "green" :background "darkslategray"))))
+ '(secondary-selection ((t (:foreground "green" :background "darkslategray"))))
+ '(show-paren-match ((((class color)) (:foreground "#1133ff"))))
+ '(widget-documentation ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
+ '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)) t)
+ '(zmacs-region ((t (:foreground "green" :background "darkslategrey")))))
