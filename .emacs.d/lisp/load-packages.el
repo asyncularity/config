@@ -21,6 +21,7 @@
                           helm-ag
                           helm-projectile
                           js2-mode
+                          json-mode
                           magit
                           projectile
                           )))

@@ -17,8 +17,6 @@
 (require 'load-packages)
 (load-elpa-packages)
 
-(if (boundp 'gtags) (require 'gtags))
-(autoload 'javascript-mode "javascript" nil t)
 (autoload 'js2-mode "js2-mode" nil t)
 (load    "functions")
 
@@ -54,7 +52,7 @@
 (define-key global-map [?\C-b] 'helm-mini)
 
 ;; Git
-(define-key global-map [?\C-x?g] 'magit-status)
+(define-key global-map [?\C-n?g] 'magit-status)
 
 ;; Search
 (define-key global-map [?\C-s] 'isearch-forward)
@@ -85,9 +83,9 @@
 (define-key global-map [?\M-g]       'goto-line)
 
 ;; Tags
-(define-key global-map [?\M-.]       'gtags-find-tag)
-(define-key global-map [?\M-,]       'gtags-find-rtag)
-(define-key global-map [?\M-p]       'gtags-pop-stack)
+;; (define-key global-map [?\M-.]       'gtags-find-tag)
+;; (define-key global-map [?\M-,]       'gtags-find-rtag)
+;; (define-key global-map [?\M-p]       'gtags-pop-stack)
 
 ;; Navigation
 (define-key global-map [?\C-h] 'previous-line)
@@ -201,8 +199,6 @@
 		       ("\\<\\(TODO*\\)\\>" 1 font-lock-warning-face prepend)))
 
 
-
-
 ;;; hooks ;;;
 
 (defun my-go-mode-hook ()
@@ -210,10 +206,9 @@
   (local-set-key [?\C-c?\C-s]  'hs-show-block)
   (local-set-key [?\C-c?\C-l]  'hs-show-all)
   (local-set-key [?\C-c?\C-z]  'hs-hide-all)
-  (hs-minor-mode)
-  (gtags-mode)
   (add-hook 'before-save-hook 'gofmt-before-save)  
-  (collapse-go))  
+  (hs-minor-mode)
+  (collapse-1))
 
 (defun common-hook ()
   (local-set-key [?\M-e] 'backward-word)
@@ -237,7 +232,7 @@
   (local-set-key [?\C-c?\C-z]  'hs-hide-all)
   (hs-minor-mode))
 
-(defun all-c-mode-hook ()
+(defun my-c-mode-hook ()
   (common-hook)
   (c-like-common-hook)
   (c-set-style "stroustrup")
@@ -245,28 +240,24 @@
   (add-hook 'after-revert-hook  'hs-hide-all)
   (hs-hide-all))
 
-(defun all-java-mode-hook ()
+(defun my-java-mode-hook ()
   (common-hook)
   (c-like-common-hook)
-  (gtags-mode)
-  (local-set-key [?\C-c?\C-z] 'collapse-java)
+  (local-set-key [?\C-c?\C-z] 'collapse-2)
   (add-hook 'before-revert-hook 'hs-show-all)
-  (add-hook 'after-revert-hook  'collapse-java)
-  (collapse-java))
+  (add-hook 'after-revert-hook  'collapse-2)
+  (collapse-2))
 
-(defun all-javascript-mode-hook ()
-  (common-hook)
-  (c-like-common-hook)
-  (local-set-key [?\C-c?\C-z] 'collapse-java)
-  (add-hook 'before-revert-hook 'hs-show-all)
-  (add-hook 'after-revert-hook  'hs-hide-all)
-  (collapse-java))
-
-(defun all-sh-mode-hook ()
+(defun my-sh-mode-hook ()
   (common-hook))
 
+(defun my-json-mode-hook ()
+  (common-hook)
+  (hs-minor-mode)
+  (collapse-1))
+
 (defun my-js2-mode-hook ()
-					;http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
+  ;; http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
   (setq js-indent-level 4
 	indent-tabs-mode nil
 	c-basic-offset 4)
@@ -290,12 +281,12 @@
       (js2-highlight-vars-mode))
   (common-hook)
   (c-like-common-hook)
-  (local-set-key [?\C-c?\C-z] 'collapse-java)
-  (local-set-key [?\C-c?\C-h]  'hs-hide-block)
-  (local-set-key [?\C-c?\C-s]  'hs-show-block)
-  (local-set-key [?\C-c?\C-l]  'hs-show-all)
-  (local-set-key [?\C-c?\C-z]  'hs-hide-all)
-  (collapse-java))
+  (local-set-key [?\C-c?\C-z] 'collapse-1)
+  (local-set-key [?\C-c?\C-h] 'hs-hide-block)
+  (local-set-key [?\C-c?\C-s] 'hs-show-block)
+  (local-set-key [?\C-c?\C-l] 'hs-show-all)
+  (local-set-key [?\C-c?\C-z] 'hs-hide-all)
+  (collapse-1))
 
 (defun py-outline-level ()
   "This is so that `current-column` DTRT in otherwise-hidden text"
@@ -304,7 +295,7 @@
       (skip-chars-forward "\t ")
       (current-column))))
 
-(defun all-python-mode-hook ()
+(defun my-python-mode-hook ()
   (common-hook)
   (local-set-key [C-tab] 'dabbrev-expand)
   (local-set-key [?\C-c?\C-u] 'uncomment-region)
@@ -318,49 +309,14 @@
   (outline-minor-mode t)
   (show-paren-mode 1))
 
-(defun my-ruby-hook ()
-  (common-hook)
-  (outline-minor-mode t)
-  (show-paren-mode 1))
-
-(defun all-ruby-mode-hook ()
-  (common-hook)
-  (local-set-key [?\C-c?\C-u] 'uncomment-region)
-  (local-set-key [?\C-c?\C-c] 'comment-region)
-  (local-set-key [?\C-c?\C-h] 'hide-entry)
-  (local-set-key [?\C-c?\C-z] 'hide-body)
-  (local-set-key [?\C-c?\C-s] 'hs-show-block)
-  (my-ruby-hook))
-
-(defun my-gtags-hook ()
-  (define-key gtags-select-mode-map [?\C-h] 'previous-line)
-  (define-key gtags-select-mode-map [?\C-t] 'next-line)
-  (define-key gtags-select-mode-map [?\C-e] 'backward-char)
-  (define-key gtags-select-mode-map [?\C-u] 'forward-char)
-  (define-key gtags-select-mode-map [?\M-h] 'backward-paragraph)
-  (define-key gtags-select-mode-map [?\M-t] 'forward-paragraph)
-  (define-key gtags-select-mode-map [?\M-e] 'backward-word)
-  (define-key gtags-select-mode-map [?\M-u] 'forward-word)
-  (define-key gtags-mode-map [?\C-h] 'previous-line)
-  (define-key gtags-mode-map [?\C-t] 'next-line)
-  (define-key gtags-mode-map [?\C-e] 'backward-char)
-  (define-key gtags-mode-map [?\C-u] 'forward-char)
-  (define-key gtags-mode-map [?\M-h] 'backward-paragraph)
-  (define-key gtags-mode-map [?\M-t] 'forward-paragraph)
-  (define-key gtags-mode-map [?\M-e] 'backward-word)
-  (define-key gtags-mode-map [?\M-u] 'forward-word))
-
-(add-hook 'c-mode-hook 'all-c-mode-hook)
-(add-hook 'java-mode-hook 'all-java-mode-hook)
-(add-hook 'javascript-mode-hook 'all-javascript-mode-hook)
-(add-hook 'js-mode-hook 'all-javascript-mode-hook)
-(add-hook 'sh-mode-hook 'all-sh-mode-hook)
-(add-hook 'python-mode-hook  'all-python-mode-hook)
-(add-hook 'ruby-mode-hook 'all-ruby-mode-hook)
+(add-hook 'c-mode-hook 'my-c-mode-hook)
+(add-hook 'java-mode-hook 'my-java-mode-hook)
+(add-hook 'sh-mode-hook 'my-sh-mode-hook)
+(add-hook 'python-mode-hook  'my-python-mode-hook)
 (add-hook 'emacs-lisp-mode-hook 'common-hook)
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
-(add-hook 'gtags-mode-hook 'my-gtags-hook)
 (add-hook 'go-mode-hook 'my-go-mode-hook)
+(add-hook 'json-mode-hook 'my-json-mode-hook)
 
 (setq auto-mode-alist (cons '("\.java$" . java-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\.js$" . js2-mode) auto-mode-alist))

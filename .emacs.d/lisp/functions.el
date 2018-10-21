@@ -25,79 +25,22 @@
           (re-search-forward "[ \t\r\n]+" nil t)
           (replace-match "" nil nil))))))
 
-(defun insert-copyright ()
-  "Insert copyright notice at top of buffer"
-  (interactive "*")
-  (save-excursion
-    (goto-char 0)
-    (insert-file-contents "~/.emacs.d/copyright")
-    (re-search-forward "$Id:" nil t)
-    (backward-delete-char 4)
-    (insert-id)))
-
-;(defun collapse-comments ()
-;  "Collases all the c-style comments with hide-show"
-;  (interactive)
-;  (save-excursion
-;    (save-restriction
-;      (save-match-data
-;        (while
-;            (re-search-forward hs-c-start-regexp nil 't)
-;          (progn
-;            (if (not (hs-already-hidden-p)) (hs-hide-block))
-;            (next-line 1)))))))
-(defun collapse-comments ())
-
-(defun collapse-java ()
-  "Collases all the java functions with hide-show"
-  (interactive)
+(defun collapse-level (level)
+  "Collases all the objects at the specified level with hide-show"
+  (interactive "r")
   (save-excursion
     (save-restriction
       (save-match-data
         (progn
           (hs-hide-initial-comment-block)
-          (hs-hide-level 2)
-          (collapse-comments))))))
+          (hs-hide-level level))))))
 
-(defun collapse-go ()
-  "Collases all the java functions with hide-show"
-  (interactive)
-  (save-excursion
-    (save-restriction
-      (save-match-data
-        (progn
-          (hs-hide-initial-comment-block)
-          (hs-hide-level 1)
-          (collapse-comments))))))
+(defun collapse-1 ()
+  "Collases all the go functions with hide-show"
+  (collapse-level 1))
 
-(defun my-js2-indent-function ()
-  (interactive)
-  (save-restriction
-    (widen)
-    (let* ((inhibit-point-motion-hooks t)
-           (parse-status (save-excursion (syntax-ppss (point-at-bol))))
-           (offset (- (current-column) (current-indentation)))
-           (indentation (js--proper-indentation parse-status))
-           node)
+(defun collapse-2 ()
+  "Collases all the go functions with hide-show"
+  (collapse-level 2))
 
-      (save-excursion
-
-        ;; I like to indent case and labels to half of the tab width
-        (back-to-indentation)
-        (if (looking-at "case\\s-")
-            (setq indentation (+ indentation (/ js-indent-level 2))))
-
-        ;; consecutive declarations in a var statement are nice if
-        ;; properly aligned, i.e:
-        ;;
-        ;; var foo = "bar",
-        ;;     bar = "foo";
-        (setq node (js2-node-at-point))
-        (when (and node
-                   (= js2-NAME (js2-node-type node))
-                   (= js2-VAR (js2-node-type (js2-node-parent node))))
-          (setq indentation (+ 4 indentation))))
-
-      (indent-line-to indentation)
-      (when (> offset 0) (forward-char offset)))))
 
