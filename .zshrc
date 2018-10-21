@@ -142,10 +142,10 @@ upd ()     {
         cp ~/.ssh/authorized_keys2 ~/.ssh/authorized_keys2.back
     fi
     rsync -rlptvz --exclude '.git' -e ssh dmorris@metaloft.com:~/config/ ~/
-    if [ -z "`diff ~/.ssh/authorized_keys ~/.ssh/authorized_keys.back`" ] ; then
+    if [ ! diff ~/.ssh/auuthorized_keys ~/.ssh/authorized_keys.back >/dev/null 2>&1 ] ; then
       cat ~/.ssh/authorized_keys.back >> ~/.ssh/authorized_keys
     fi 
-    if [ -z "`diff ~/.ssh/authorized_keys2 ~/.ssh/authorized_keys2.back`" ] ; then
+    if [ ! diff ~/.ssh/authorized_keys2 ~/.ssh/authorized_keys2.back >/dev/null 2>&1 ] ; then
       cat ~/.ssh/authorized_keys2.back >> ~/.ssh/authorized_keys2
     fi 
 }
