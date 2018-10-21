@@ -1,0 +1,200 @@
+###########
+## Leaks ##
+###########
+
+# libc
+
+{
+   libc
+   Memcheck:Leak
+   fun:malloc
+   obj:/lib/tls/libc-2.3.2.so
+}
+
+{
+   libc 2
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/ld-2.3.2.so
+   obj:/lib/ld-2.3.2.so
+   fun:_dl_allocate_tls
+}
+
+{
+   libc 3
+   Memcheck:Leak
+   fun:malloc
+   obj:/lib/tls/libc-2.3.2.so
+   obj:/lib/tls/libc-2.3.2.so
+   obj:/lib/tls/libc-2.3.2.so
+}
+
+{
+   libc 4
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/tls/libdl-2.3.2.so
+   obj:/usr/lib/valgrind/libpthread.so
+}
+
+{
+   getproto
+   Memcheck:Leak
+   fun:malloc
+   fun:getprotobynumber
+}
+
+{
+   pthread
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/tls/libdl-2.3.2.so
+   obj:/usr/local/lib/valgrind/libpthread.so
+}
+
+{
+   pthread 2
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/tls/libdl-2.3.2.so
+   obj:/usr/local/lib/valgrind/libpthread.so
+}
+
+{
+   pthread 3
+   Memcheck:Leak
+   fun:malloc
+   fun:my_malloc
+   fun:get_or_allocate_specifics_ptr
+   fun:*
+}
+
+{
+   pthread 4
+   Memcheck:Leak
+   fun:memalign
+   obj:/lib/ld-2.3.2.so
+   fun:_dl_allocate_tls
+   fun:pthread_create
+}
+
+{
+   dlcrap
+   Memcheck:Leak
+   fun:malloc
+   obj:/lib/ld-2.3.2.so
+   obj:/lib/ld-2.3.2.so
+   fun:_dl_map_object
+}
+
+{
+   dlcrap 2
+   Memcheck:Leak
+   fun:calloc
+   obj:/lib/ld-2.3.2.so
+   obj:/lib/ld-2.3.2.so
+   fun:_dl_map_object
+}
+
+{
+   dlcrap 3
+   Memcheck:Leak
+   fun:malloc
+   fun:*
+   obj:/lib/tls/libc-2.3.2.so
+   fun:_dl_catch_error
+}
+
+{
+   dlcrap 4
+   Memcheck:Leak
+   fun:calloc
+   fun:*
+   obj:/lib/tls/libc-2.3.2.so
+   fun:_dl_catch_error
+}
+
+# For inet_ntoa
+
+{
+   malloc/inet_ntoa(Leak)
+   Memcheck:Leak
+   fun:malloc
+   fun:inet_ntoa
+}
+
+{
+   malloc/inet_ntoa(Leak)
+   Memcheck:Leak
+   fun:my_malloc
+   fun:get_*_ptr
+   fun:__pthread_getspecific
+   fun:inet_ntoa
+}
+
+{
+   malloc/libxml2(Leak)
+   Memcheck:Leak
+   fun:malloc
+   fun:*
+   fun:xmlGetGlobalState
+}
+
+{
+   malloc/libxml2(Leak)
+   Memcheck:Leak
+   fun:my_malloc
+   fun:get_or_allocate_specifics_ptr
+   fun:__pthread_getspecific
+   fun:xmlGetGlobalState
+}
+
+###########
+## Leaks ##
+###########
+
+
+# uninit 
+
+{
+   execve uninit 2
+   Memcheck:Param
+   execve(envp)
+   fun:execve
+   obj:/lib/tls/libc-2.3.2.so
+}
+
+{
+   execve uninit 2
+   Memcheck:Param
+   execve(envp[i])
+   fun:execve
+   obj:/lib/tls/libc-2.3.2.so
+}
+
+{
+   sigaction uninit
+   Memcheck:Param
+   sigaction(act)
+   fun:__libc_sigaction
+}
+
+{
+   ipq uninit
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   fun:ipq_netlink_sendto
+   fun:ipq_set_mode
+   fun:netcap_queue_init
+}
+
+# errors
+
+{
+   dlclose invalid read size
+   Memcheck:Addr1
+   fun:_dl_close
+   obj:/lib/tls/libc-2.3.2.so
+   fun:__libc_dlclose
+}

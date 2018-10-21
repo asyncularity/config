@@ -1,0 +1,11 @@
+[user]
+	name = Dirk Morris
+	email = dmorris@untangle.com
+[http]
+	sslverify = false
+[push]
+	default = simple
+[apply]
+        whitespace = nowarn
+[core]
+	excludesfile = /home/dmorris/.gitignore

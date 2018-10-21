@@ -1,0 +1,51 @@
+escape		"^zz"	# the command character
+
+startup_message	off
+
+vbell 		on
+vbell_msg 	"   Wuff  ----  Wuff!!  "
+
+defscrollback	2000
+msgwait		2
+caption 	always 	"%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+#caption 	always 	"%{yK}   -=%H=- | $LOGNAME | %{yK}%c |  %{yK}%-Lw%{yK}%50>%{Ky}%n%f* %t%{-}%+Lw%<%{- Wk}"
+#caption 	always 	"%c Flags:%f hardstatus:%h %H Load:%l %w"
+hardstatus 	string "%h%? users: %u%?"
+
+shell		-$SHELL
+
+###########################################################################
+# Bindings (from /etc/screenrc)
+###########################################################################
+bind ^k
+#bind L
+bind ^\
+# Make them better
+bind	\\	quit
+#bind 	I 	login on
+#bind 	O 	login off
+bind 	} 	history
+bind 	= 	resize =
+bind 	+ 	resize +1
+bind 	- 	resize -1
+bind 	_ 	resize
+bind 	o 	focus down
+#bind 	k 	kill
+bind 	b 	prev
+bind	c	screen 1
+
+###########################################################################
+# termcap info
+###########################################################################
+termcapinfo 	vt100 dl=5\E[M
+# title bar
+termcapinfo 	xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+# optimal terminals
+termcapinfo	xterm*|linux*|rxvt*|Eterm* OP
+# those terminals use screen scrollback buffer
+termcapinfo 	xterm|xterms|xs|rxvt ti@:te@
+
+#term 		xterm
+#termcapinfo 	xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+screen 1
