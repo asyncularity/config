@@ -141,7 +141,7 @@ upd ()     {
     if [ -f ~/.ssh/authorized_keys2 ] ; then
         cp ~/.ssh/authorized_keys2 ~/.ssh/authorized_keys2.back
     fi
-    rsync -rlptvz -e ssh dmorris@metaloft.com:~/rsync/ ~/
+    rsync -rlptvz --exclude '.git' -e ssh dmorris@metaloft.com:~/config/ ~/
     if [ -z "`diff ~/.ssh/authorized_keys ~/.ssh/authorized_keys.back`" ] ; then
       cat ~/.ssh/authorized_keys.back >> ~/.ssh/authorized_keys
     fi 
