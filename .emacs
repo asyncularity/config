@@ -8,6 +8,8 @@
 (setq my-emacsd (concat my-home "/.emacs.d/"))
 (setq load-path (cons (concat my-emacsd "/lisp") load-path))
 (setq load-path (cons (concat my-emacsd "/lisp/jdee-2.4.1/lisp") load-path))
+(setq browse-url-browser-function 'browse-url-generic)
+(setq browse-url-generic-program "google-chrome")
 
 (require 'id)
 (require 'align)
@@ -36,29 +38,35 @@
 
 ;;; KEYBINDINGS ;;;
 (define-key global-map [?\C-n] 'Control-X-prefix)
+
+;; Navigation
+(define-key global-map [?\C-h] 'previous-line)
+(define-key global-map [?\C-t] 'next-line)
+(define-key global-map [?\C-e] 'backward-char)
+(define-key global-map [?\C-u] 'forward-char)
+(define-key global-map [?\M-h] 'backward-paragraph)
+(define-key global-map [?\M-t] 'forward-paragraph)
+(define-key global-map [?\M-e] 'backward-word)
+(define-key global-map [?\M-u] 'forward-word)
+(define-key global-map [?\C-\M-h] 'beginning-of-defun)
+
+;; Copy/Paste
 (define-key global-map [?\C-f] 'kill-ring-save)
 (define-key global-map [?\M-f] 'kill-region)
-(define-key global-map [?\C-y] 'yank) 
-(define-key global-map [?\M-y] 'yank)
 (define-key global-map [?\M-k] 'kill-region)
-
-;; Documentation Stuff
-(define-key global-map [?\C-c?w] 'insert-datestamp)
-(define-key global-map [?\C-c?m] 'insert-id)
-(define-key global-map [?\C-c?v] 'insert-copyright)
-
-;; Buffer switching
-;; (define-key global-map [?\C-b] 'switch-to-buffer)
-(define-key global-map [?\C-b] 'helm-mini)
-
-;; Git
-(define-key global-map [?\C-n?g] 'magit-status)
+(define-key global-map [?\C-k] 'kill-line-noring) 
 
 ;; Search
 (define-key global-map [?\C-s] 'isearch-forward)
 (define-key global-map [?\M-s] 'helm-projectile-grep)
 
-;; other stuff
+;; Other stuff
+(define-key global-map [?\C-c?w]     'insert-datestamp)
+(define-key global-map [?\C-c?m]     'insert-id)
+(define-key global-map [?\C-c?v]     'insert-copyright)
+(define-key global-map [?\C-b]       'helm-mini)
+;;(define-key global-map [?\C-n?\C-f]  'helm-find-files)
+(define-key global-map [?\C-n?g]     'magit-status)
 (define-key global-map [?\C-c?\C-c]  'comment-region)
 (define-key global-map [?\C-c?\C-u]  'uncomment-region)
 (define-key global-map [?\M-r]       'query-replace-regexp)
@@ -82,28 +90,10 @@
 (define-key global-map [?\C-c?\C-a]  'align-cols)
 (define-key global-map [?\M-g]       'goto-line)
 
-;; Tags
-;; (define-key global-map [?\M-.]       'gtags-find-tag)
-;; (define-key global-map [?\M-,]       'gtags-find-rtag)
-;; (define-key global-map [?\M-p]       'gtags-pop-stack)
-
-;; Navigation
-(define-key global-map [?\C-h] 'previous-line)
-(define-key global-map [?\C-t] 'next-line)
-(define-key global-map [?\C-e] 'backward-char)
-(define-key global-map [?\C-u] 'forward-char)
-(define-key global-map [?\M-h] 'backward-paragraph)
-(define-key global-map [?\M-t] 'forward-paragraph)
-(define-key global-map [?\M-e] 'backward-word)
-(define-key global-map [?\M-u] 'forward-word)
-(define-key global-map [?\C-\M-h] 'beginning-of-defun)
-(define-key global-map [?\C-\M-t] 'end-of-defun)
-
 ;; Habit breakers
 (define-key global-map [?\C-.?\C-.] nil)
 (define-key global-map [?\C-x?\C-b] nil)
 (define-key global-map [?\C-x?\C-c] nil)
-(define-key global-map [?\C-x?\C-t] nil)
 (define-key global-map [?\C-x?\C-o] nil)
 (define-key global-map [?\C-x?\C-n] nil)
 
@@ -201,6 +191,18 @@
 
 ;;; hooks ;;;
 
+(defun common-hook ()
+  (local-set-key [?\M-e] 'backward-word)
+  (local-set-key [?\C-j] 'end-of-line)
+  (local-set-key [?\C-e] 'backward-char)
+  (local-set-key [?\M-h] 'backward-paragraph)
+  (local-set-key [?\M-t] 'forward-paragraph)
+  (tab-nonsense))
+
+(defun my-org-mode-hook ()
+  (common-hook)
+  (org-bullets-mode 1))
+
 (defun my-go-mode-hook ()
   (local-set-key [?\C-c?\C-h]  'hs-hide-block)
   (local-set-key [?\C-c?\C-s]  'hs-show-block)
@@ -209,12 +211,6 @@
   (add-hook 'before-save-hook 'gofmt-before-save)  
   (hs-minor-mode)
   (collapse-1))
-
-(defun common-hook ()
-  (local-set-key [?\M-e] 'backward-word)
-  (local-set-key [?\C-j] 'end-of-line)
-  (local-set-key [?\C-e] 'backward-char)
-  (tab-nonsense))
 
 (defun c-like-common-hook ()
   (local-set-key [?\C-c?\C-a] 'align-cols)
@@ -317,6 +313,7 @@
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 (add-hook 'go-mode-hook 'my-go-mode-hook)
 (add-hook 'json-mode-hook 'my-json-mode-hook)
+(add-hook 'org-mode-hook 'my-org-mode-hook)
 
 (setq auto-mode-alist (cons '("\.java$" . java-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\.js$" . js2-mode) auto-mode-alist))

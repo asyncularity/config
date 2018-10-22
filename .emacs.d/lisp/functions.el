@@ -43,4 +43,7 @@
   "Collases all the go functions with hide-show"
   (collapse-level 2))
 
-
+(defun kill-line-noring ()
+  "kill-line but without putting the result in the kill-ring"
+  (interactive)
+  (delete-region (point) (progn (forward-line 1) (point))))
