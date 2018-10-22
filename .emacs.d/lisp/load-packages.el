@@ -23,6 +23,7 @@
                           js2-mode
                           json-mode
                           magit
+                          org-bullets
                           projectile
                           )))
       (package-initialize)
