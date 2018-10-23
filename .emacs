@@ -52,10 +52,12 @@
 (define-key global-map (kbd "M-f") 'kill-region)
 (define-key global-map (kbd "M-k") 'kill-region)
 (define-key global-map (kbd "C-k") 'kill-line-noring) 
+(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
 
 ;; Search
 (define-key global-map (kbd "C-s") 'isearch-forward)
 (define-key global-map (kbd "M-s") 'helm-projectile-grep)
+(define-key global-map (kbd "M-x") 'helm-M-x)
 
 ;; Other stuff
 (define-key global-map (kbd "C-<backspace>") 'backward-delete-word-noring)
@@ -70,7 +72,7 @@
 (define-key global-map (kbd "C-c C-u")   'uncomment-region)
 (define-key global-map (kbd "M-r")       'query-replace-regexp)
 (define-key global-map (kbd "M-\\")      'indent-region)
-(define-key global-map (kbd "<tab>")     'dabbrev-expand)
+(define-key global-map (kbd "C-<tab>")     'dabbrev-expand)
 (define-key global-map (kbd "C-x C-r")   'revert-buffer)
 (define-key global-map (kbd "C-x C-e")   'call-last-kbd-macro)
 (define-key global-map (kbd "C-p")       'undo)
@@ -112,6 +114,9 @@
 (define-key helm-find-files-map (kbd "M-e") 'backward-word)
 (define-key helm-find-files-map (kbd "M-u") 'forward-word)
 (define-key helm-find-files-map (kbd "C-<backspace>") 'backward-delete-word-noring)
+;;(define-key helm-map (kbd "<tab>") 'helm-maybe-exit-minibuffer)
+;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+;;(define-key helm-map (kbd "C-j") 'helm-execute-persistent-action)
 
 ;; helm
 (setq
@@ -124,25 +129,6 @@
 (setq split-height-threshold nil)
 
 (helm-mode t)
-(global-set-key (kbd "M-x") 'helm-M-x)
-;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; (global-set-key (kbd "C-x b") 'helm-mini)
-;; (global-set-key (kbd "C-x ,") 'helm-mini)
-;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
-;; (define-key helm-map (kbd "C-j") 'helm-maybe-exit-minibuffer)
-;; (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-
-;; "follow" in helm-occur
-;;(cl-defmethod helm-setup-user-source ((source helm-source-multi-occur)) (setf (slot-value source 'follow) 1))
-
-(require 'helm-projectile)
-(defun helm-projectile-switch-buffer ()
-  "Use Helm instead of ido to switch buffer in projectile."
-  (interactive)
-  (helm :sources helm-source-projectile-buffers-list
-        :buffer "*helm projectile buffers*"
-        :prompt (projectile-prepend-project-name "Switch to buffer: ")))
-
 
 (require 'helm-projectile)
 (defun helm-projectile-switch-buffer ()
@@ -189,8 +175,8 @@
 (setq sentence-end-double-space nil)
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76))
 (setq highlightlist  '(("\\<\\(FIXME\\)\\>" 1 font-lock-warning-face prepend)
-		       ("\\<\\(XXX*\\)\\>"  1 font-lock-warning-face prepend)
-		       ("\\<\\(TODO*\\)\\>" 1 font-lock-warning-face prepend)))
+                       ("\\<\\(XXX*\\)\\>"  1 font-lock-warning-face prepend)
+                       ("\\<\\(TODO*\\)\\>" 1 font-lock-warning-face prepend)))
 
 
 ;;; hooks ;;;
@@ -326,75 +312,7 @@
 (set-cursor-color "lightskyblue")
 (show-paren-mode)
 
-(if window-system
-    (custom-set-faces
-     '(blue ((t (:foreground "skyblue"))))
-     '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
-     '(font-lock-comment-face ((t (:foreground "Grey40"))))
-     '(font-lock-constant-face ((((class color) (background dark)) (:foreground "#ABC"))))
-     '(font-lock-doc-face ((t (:foreground "Grey40"))))
-     '(font-lock-function-name-face ((t (:foreground "skyblue"))))
-     '(font-lock-keyword-face ((t (:foreground "#6633cc"))))
-     '(font-lock-preprocessor-face ((t (:foreground "lightgreen"))))
-     '(font-lock-string-face ((t (:foreground "#77BB99"))))
-     '(font-lock-type-face ((t (:foreground "CornflowerBlue"))))
-     '(font-lock-variable-name-face ((t (:foreground "skyblue"))))
-     '(font-lock-warning-face ((t (:foreground "red"))))
-     '(green ((t (:foreground "SeaGreen"))))
-     '(highlight ((t (:foreground "White" :background "SlateGrey"))))
-     '(isearch ((t (:foreground "LightSlateBlue" :background "navyblue"))))
-     '(paren-match ((t (:background "grey35"))))
-     '(region ((((class color) (background dark)) (:foreground "green" :background "darkslategray"))))
-     '(secondary-selection ((t (:foreground "green" :background "darkslategray"))))
-     '(show-paren-match-face ((((class color)) (:foreground "#1133ff"))))
-     '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
-     '(zmacs-region ((t (:foreground "green" :background "darkslategrey"))))))
-
-(if (not window-system)
-    (custom-set-faces
-     '(blue ((t (:foreground "skyblue"))))
-     '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
-     '(font-lock-comment-face ((t (:foreground "white"))))
-     '(font-lock-constant-face ((((class color) (background dark)) (:foreground "#ABC"))))
-     '(font-lock-doc-face ((t (:foreground "Grey40"))))
-     '(font-lock-function-name-face ((t (:foreground "skyblue"))))
-     '(font-lock-keyword-face ((t (:foreground "#6633cc"))))
-     '(font-lock-preprocessor-face ((t (:foreground "lightgreen"))))
-     '(font-lock-string-face ((t (:foreground "#77BB99"))))
-     '(font-lock-type-face ((t (:foreground "CornflowerBlue"))))
-     '(font-lock-variable-name-face ((t (:foreground "skyblue"))))
-     '(font-lock-warning-face ((t (:foreground "red"))))
-     '(green ((t (:foreground "SeaGreen"))))
-     '(highlight ((t (:foreground "White" :background "SlateGrey"))))
-     '(isearch ((t (:foreground "LightSlateBlue" :background "navyblue"))))
-     '(paren-match ((t (:background "grey35"))))
-     '(region ((((class color) (background dark)) (:foreground "green" :background "darkslategray"))))
-     '(secondary-selection ((t (:foreground "green" :background "darkslategray"))))
-     '(show-paren-match-face ((((class color)) (:foreground "#1133ff"))))
-     '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
-     '(zmacs-region ((t (:foreground "green" :background "darkslategrey"))))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(dabbrev-case-fold-search nil)
- '(global-font-lock-mode 1 nil (font-lock))
- '(jde-gen-comments nil)
- '(menu-bar-mode nil)
- '(package-selected-packages (quote (helm-projectile helm go-mode)))
- '(tool-bar-mode nil)
- '(transient-mark-mode 1)
- '(visible-bell t))
-
-(message "(* emacs *)")
-
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(blue ((t (:foreground "skyblue"))))
  '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
  '(font-lock-comment-face ((t (:foreground "Grey40"))))
@@ -413,7 +331,18 @@
  '(paren-match ((t (:background "grey35"))))
  '(region ((((class color) (background dark)) (:foreground "green" :background "darkslategray"))))
  '(secondary-selection ((t (:foreground "green" :background "darkslategray"))))
- '(show-paren-match ((((class color)) (:foreground "#1133ff"))))
- '(widget-documentation ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
- '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)) t)
+ '(show-paren-match-face ((((class color)) (:foreground "#1133ff"))))
+ '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
  '(zmacs-region ((t (:foreground "green" :background "darkslategrey")))))
+
+(custom-set-variables
+ '(dabbrev-case-fold-search nil)
+ '(global-font-lock-mode 1 nil (font-lock))
+ '(jde-gen-comments nil)
+ '(menu-bar-mode nil)
+ '(package-selected-packages (quote (helm-projectile helm go-mode)))
+ '(tool-bar-mode nil)
+ '(transient-mark-mode 1)
+ '(visible-bell t))
+
+(message "(* emacs *)")
