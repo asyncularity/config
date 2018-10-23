@@ -43,7 +43,29 @@
   "Collases all the go functions with hide-show"
   (collapse-level 2))
 
+(defun collapse-3 ()
+  "Collases all the go functions with hide-show"
+  (collapse-level 3))
+
 (defun kill-line-noring ()
   "kill-line but without putting the result in the kill-ring"
   (interactive)
   (delete-region (point) (progn (forward-line 1) (point))))
+
+(defun delete-word-noring (arg)
+  "Delete characters forward until encountering the end of a word.
+With argument, do this that many times.
+This command does not push text to `kill-ring'."
+  (interactive "p")
+  (delete-region
+   (point)
+   (progn
+     (forward-word arg)
+     (point))))
+
+(defun backward-delete-word-noring (arg)
+  "Delete characters backward until encountering the beginning of a word.
+With argument, do this that many times.
+This command does not push text to `kill-ring'."
+  (interactive "p")
+  (delete-word-noring (- arg)))

@@ -38,6 +38,9 @@
     ;; helm-projectile doesnt properly require helm-ag and ag, require them manually
     (require 'helm-ag)
     (require 'ag)
+
+    (require 'helm-files)
+    (require 'helm-projectile)
     )
   )
 
