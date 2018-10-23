@@ -19,18 +19,11 @@
 
 (load "functions")
 
-(defconst windows (equal window-system 'w32))
-(defconst xwindows (equal window-system 'x))
-(defconst nowindows (equal window-system nil))
+(defun font-exists-p (font) "check if font exists" (if (null (x-list-fonts font)) nil t))
 
-(defun font-existsp (font)
-  (if xwindows
-      (if (null (x-list-fonts font))
-          nil t)))
-
-(if (font-existsp "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
+(if (font-exists-p "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
     (set-default-font "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
-  (if (font-existsp "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
+  (if (font-exists-p "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
       (set-default-font "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")))
 
 ;;; KEYBINDINGS ;;;
@@ -117,13 +110,6 @@
 ;;(define-key helm-map (kbd "<tab>") 'helm-maybe-exit-minibuffer)
 ;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 ;;(define-key helm-map (kbd "C-j") 'helm-execute-persistent-action)
-
-;; helm
-(setq
- ;; open helm buffer in another window
- helm-split-window-default-side 'other
- ;; do not occupy whole other window
- helm-split-window-in-side-p t)
 
 ;; prefer creating window on the right for the rest
 (setq split-height-threshold nil)
@@ -245,8 +231,8 @@
 (defun my-js2-mode-hook ()
   ;; http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
   (setq js-indent-level 4
-	indent-tabs-mode nil
-	c-basic-offset 4)
+        indent-tabs-mode nil
+        c-basic-offset 4)
   (c-toggle-auto-state 0)
   (c-toggle-hungry-state 1)
 
@@ -342,6 +328,8 @@
  '(menu-bar-mode nil)
  '(package-selected-packages (quote (helm-projectile helm go-mode)))
  '(tool-bar-mode nil)
+ ;;  '(helm-split-window-default-side 'other)
+ ;;  '(helm-split-window-in-side-p t)
  '(transient-mark-mode 1)
  '(visible-bell t))
 
