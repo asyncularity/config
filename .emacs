@@ -16,18 +16,18 @@
 (require 'jde-autoload)
 (require 'load-packages)
 (load-elpa-packages)
-
 (load "functions")
 
 (defun font-exists-p (font) "check if font exists" (if (null (x-list-fonts font)) nil t))
-
 (if (font-exists-p "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
     (set-default-font "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
   (if (font-exists-p "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
       (set-default-font "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")))
 
 ;;; KEYBINDINGS ;;;
+
 (define-key global-map (kbd "C-n") 'Control-X-prefix)
+(define-key global-map (kbd "M-x") 'helm-M-x)
 
 ;; Navigation
 (define-key global-map (kbd "C-h") 'previous-line)
@@ -50,7 +50,6 @@
 ;; Search
 (define-key global-map (kbd "C-s") 'isearch-forward)
 (define-key global-map (kbd "M-s") 'helm-projectile-grep)
-(define-key global-map (kbd "M-x") 'helm-M-x)
 
 ;; Other stuff
 (define-key global-map (kbd "C-<backspace>") 'backward-delete-word-noring)
@@ -65,7 +64,7 @@
 (define-key global-map (kbd "C-c C-u")   'uncomment-region)
 (define-key global-map (kbd "M-r")       'query-replace-regexp)
 (define-key global-map (kbd "M-\\")      'indent-region)
-(define-key global-map (kbd "C-<tab>")     'dabbrev-expand)
+(define-key global-map (kbd "C-<tab>")   'dabbrev-expand)
 (define-key global-map (kbd "C-x C-r")   'revert-buffer)
 (define-key global-map (kbd "C-x C-e")   'call-last-kbd-macro)
 (define-key global-map (kbd "C-p")       'undo)
@@ -84,7 +83,6 @@
 (define-key global-map (kbd "M-g")       'goto-line)
 
 ;; Habit breakers
-;; (define-key global-map (kbd "C-. C-.") nil)
 (define-key global-map (kbd "C-x C-b") nil)
 (define-key global-map (kbd "C-x C-c") nil)
 (define-key global-map (kbd "C-x C-o") nil)
@@ -111,24 +109,6 @@
 ;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 ;;(define-key helm-map (kbd "C-j") 'helm-execute-persistent-action)
 
-;; prefer creating window on the right for the rest
-(setq split-height-threshold nil)
-
-(helm-mode t)
-
-(require 'helm-projectile)
-(defun helm-projectile-switch-buffer ()
-  "Use Helm instead of ido to switch buffer in projectile."
-  (interactive)
-  (helm :sources helm-source-projectile-buffers-list
-        :buffer "*helm projectile buffers*"
-        :prompt (projectile-prepend-project-name "Switch to buffer: ")))
-
-;; projectile
-(require 'projectile)
-(setq projectile-use-git-grep t)
-(projectile-global-mode)
-;; Override some projectile keymaps
 (eval-after-load 'projectile
   '(progn
      (define-key projectile-command-map (kbd "b") 'helm-projectile-switch-buffer)
@@ -137,10 +117,15 @@
 
 ;;; KEYBINDINGS ;;;
 
+(helm-mode t)
+(projectile-global-mode)
+
 (setq backup-directory-alist '(("." . ".~")))
 (setq backup-directory-alist (list (cons ".*" (expand-file-name "~/.emacsbackup/"))))
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
+
+(setq projectile-use-git-grep t)
 
 (setq ange-ftp-default-user "dmorris")
 (setq add-log-full-name "dmorris")

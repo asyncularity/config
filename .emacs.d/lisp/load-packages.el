@@ -41,6 +41,7 @@
 
     (require 'helm-files)
     (require 'helm-projectile)
+    (require 'projectile)
     )
   )
 
