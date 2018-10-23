@@ -18,11 +18,13 @@
 (load-elpa-packages)
 (load "functions")
 
-(defun font-exists-p (font) "check if font exists" (if (null (x-list-fonts font)) nil t))
-(if (font-exists-p "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
-    (set-default-font "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
-  (if (font-exists-p "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
-      (set-default-font "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")))
+(if (boundp 'x-list-fonts)
+	(progn
+      (defun font-exists-p (font) "check if font exists" (if (null (x-list-fonts font)) nil t))
+      (if (font-exists-p "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
+          (set-default-font "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
+        (if (font-exists-p "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
+            (set-default-font "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")))))
 
 ;;; KEYBINDINGS ;;;
 
