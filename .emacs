@@ -274,7 +274,9 @@
 
 (setq org-capture-templates
  '(("t" "Todo" entry (file+headline "~/todo.org" "Uncategorized")
-        "* TODO %?\n  %i\n  %a")))
+    "* TODO %?")
+   ("b" "Bug to File" entry (file+headline "~/todo.org" "Bugs to file")
+    "* TODO %?")))
 
 (require 'server)
 (or (server-running-p)
