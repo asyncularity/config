@@ -62,6 +62,7 @@
 (define-key global-map (kbd "C-b")       'helm-mini)
 (define-key global-map (kbd "C-n C-f")   'helm-find-files)
 (define-key global-map (kbd "C-n g")     'magit-status)
+(define-key global-map (kbd "C-n c")     'org-capture)
 (define-key global-map (kbd "C-c C-c")   'comment-region)
 (define-key global-map (kbd "C-c C-u")   'uncomment-region)
 (define-key global-map (kbd "M-r")       'query-replace-regexp)
@@ -270,6 +271,10 @@
 
 (setq auto-mode-alist (cons '("\.java$" . java-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\.js$" . js2-mode) auto-mode-alist))
+
+(setq org-capture-templates
+ '(("t" "Todo" entry (file+headline "~/todo.org" "Uncategorized")
+        "* TODO %?\n  %i\n  %a")))
 
 (require 'server)
 (or (server-running-p)
