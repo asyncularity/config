@@ -123,8 +123,7 @@
 (helm-mode t)
 (projectile-global-mode)
 
-(setq backup-directory-alist '(("." . ".~")))
-(setq backup-directory-alist (list (cons ".*" (expand-file-name "~/.emacsbackup/"))))
+(setq backup-directory-alist `(("." . ,"~/emacsbackup/")))
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
 
@@ -293,6 +292,10 @@
 (show-paren-mode)
 
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(blue ((t (:foreground "skyblue"))))
  '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
  '(font-lock-comment-face ((t (:foreground "Grey40"))))
@@ -311,19 +314,21 @@
  '(paren-match ((t (:background "grey35"))))
  '(region ((((class color) (background dark)) (:foreground "green" :background "darkslategray"))))
  '(secondary-selection ((t (:foreground "green" :background "darkslategray"))))
- '(show-paren-match-face ((((class color)) (:foreground "#1133ff"))))
- '(widget-documentation-face ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
+ '(show-paren-match ((((class color)) (:foreground "#1133ff"))))
+ '(widget-documentation ((((class color) (background dark)) (:foreground "LightSeaGreen")) (((class color) (background light)) (:foreground "dark green")) (t nil)))
  '(zmacs-region ((t (:foreground "green" :background "darkslategrey")))))
 
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(dabbrev-case-fold-search nil)
  '(global-font-lock-mode 1 nil (font-lock))
  '(jde-gen-comments nil)
  '(menu-bar-mode nil)
  '(package-selected-packages (quote (helm-projectile helm go-mode)))
  '(tool-bar-mode nil)
- ;;  '(helm-split-window-default-side 'other)
- ;;  '(helm-split-window-in-side-p t)
  '(transient-mark-mode 1)
  '(visible-bell t))
 
