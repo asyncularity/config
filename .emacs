@@ -154,6 +154,8 @@
 
 ;;; hooks ;;;
 
+;;; generic hooks ;;;
+
 (defun common-hook ()
   (local-set-key (kbd "M-e") 'backward-word)
   (local-set-key (kbd "C-j") 'end-of-line)
@@ -162,49 +164,49 @@
   (local-set-key (kbd "M-t") 'forward-paragraph)
   (tab-nonsense))
 
+(defun hideshow-hook ()
+  (local-set-key (kbd "C-c C-h") 'hs-hide-block)
+  (local-set-key (kbd "C-c C-s") 'hs-show-block)
+  (local-set-key (kbd "C-c C-l") 'hs-show-all)
+  (local-set-key (kbd "C-c C-z") 'hs-hide-all)
+  (hs-minor-mode)
+  (add-hook 'before-revert-hook 'hs-show-all)
+  (add-hook 'after-revert-hook  'hs-hide-all))
+
+(defun c-like-hook ()
+  (local-set-key (kbd "C-c C-a") 'align-cols)
+  (local-set-key (kbd "C-M-h")   'beginning-of-defun)
+  (local-set-key (kbd "C-M-t")   'end-of-defun)
+  (local-set-key (kbd "C-c C-f") 'c-mark-function)
+  (local-set-key (kbd "C-c C-u") 'uncomment-region)
+  (local-set-key (kbd "<return>")     'newline-and-indent)
+  (local-set-key (kbd "C-c C-t") 'nil)
+  (local-set-key (kbd "M-g")      'goto-line-expand))
+
+;;; language hooks ;;;
+
 (defun my-org-mode-hook ()
   (common-hook)
   (org-bullets-mode 1))
 
 (defun my-go-mode-hook ()
-  (local-set-key (kbd "C-c C-h")  'hs-hide-block)
-  (local-set-key (kbd "C-c C-s")  'hs-show-block)
-  (local-set-key (kbd "C-c C-l")  'hs-show-all)
-  (local-set-key (kbd "C-c C-z")  'hs-hide-all)
+  (common-hook)
+  (hideshow-hook)
   (add-hook 'before-save-hook 'gofmt-before-save)  
-  (hs-minor-mode)
   (collapse-1))
-
-(defun c-like-common-hook ()
-  (local-set-key (kbd "C-c C-a") 'align-cols)
-  (local-set-key (kbd "C-M-h")   'beginning-of-defun)
-  (local-set-key (kbd "C-M-t")   'end-of-defun)
-  (local-set-key (kbd "C-c C-f") 'c-mark-function)
-  (local-set-key (kbd "C-c C-s") 'hs-show-block)
-  (local-set-key (kbd "C-c C-u") 'uncomment-region)
-  (local-set-key (kbd "<return>")     'newline-and-indent)
-  (local-set-key (kbd "C-c C-t") 'nil)
-  (local-set-key (kbd "M-g")      'goto-line-expand)
-  (local-set-key (kbd "C-c C-h")  'hs-hide-block)
-  (local-set-key (kbd "C-c C-s")  'hs-show-block)
-  (local-set-key (kbd "C-c C-l")  'hs-show-all)
-  (local-set-key (kbd "C-c C-z")  'hs-hide-all)
-  (hs-minor-mode))
 
 (defun my-c-mode-hook ()
   (common-hook)
-  (c-like-common-hook)
+  (hideshow-hook)
+  (c-like-hook)
   (c-set-style "stroustrup")
-  (add-hook 'before-revert-hook 'hs-show-all)
-  (add-hook 'after-revert-hook  'hs-hide-all)
   (hs-hide-all))
 
 (defun my-java-mode-hook ()
   (common-hook)
-  (c-like-common-hook)
+  (hideshow-hook)
+  (c-like-hook)
   (local-set-key (kbd "C-c C-z") 'collapse-2)
-  (add-hook 'before-revert-hook 'hs-show-all)
-  (add-hook 'after-revert-hook  'collapse-2)
   (collapse-2))
 
 (defun my-sh-mode-hook ()
@@ -212,7 +214,7 @@
 
 (defun my-json-mode-hook ()
   (common-hook)
-  (hs-minor-mode)
+  (hideshow-hook)
   (collapse-1))
 
 (defun my-js2-mode-hook ()
@@ -222,41 +224,22 @@
         c-basic-offset 4)
   (c-toggle-auto-state 0)
   (c-toggle-hungry-state 1)
-
   (set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
   (define-key js2-mode-map (kbd "<return>") 'newline-and-indent)
   (define-key js2-mode-map (kbd "<backspace>") 'c-electric-backspace)
   (if (featurep 'js2-highlight-vars)
       (js2-highlight-vars-mode))
   (common-hook)
-  (c-like-common-hook)
+  (hideshow-hook)
+  (c-like-hook)
   (local-set-key (kbd "C-c C-z") 'collapse-3)
-  (local-set-key (kbd "C-c C-h") 'hs-hide-block)
-  (local-set-key (kbd "C-c C-s") 'hs-show-block)
-  (local-set-key (kbd "C-c C-l") 'hs-show-all)
-  (local-set-key (kbd "C-c C-z") 'hs-hide-all)
   (collapse-3))
-
-(defun py-outline-level ()
-  "This is so that `current-column` DTRT in otherwise-hidden text"
-  (let (buffer-invisibility-spec)
-    (save-excursion
-      (skip-chars-forward "\t ")
-      (current-column))))
 
 (defun my-python-mode-hook ()
   (common-hook)
-  (local-set-key (kbd "C-<tab>") 'dabbrev-expand)
-  (local-set-key (kbd "C-c C-u") 'uncomment-region)
-  (local-set-key (kbd "C-c C-c") 'comment-region)
-  (local-set-key (kbd "C-c C-u") 'uncomment-region)
-  (local-set-key (kbd "C-c C-h") 'hide-entry)
-  (local-set-key (kbd "C-c C-z") 'hide-body)
-  (setq outline-regexp "[^ \t\n]\\|[ \t]*\\(def[ \t]+\\|class[ \t]+\\)") 
-  (setq outline-level 'py-outline-level) ; enable our level computation
-  (setq outline-minor-mode-prefix "\C-c")
-  (outline-minor-mode t)
-  (show-paren-mode 1))
+  (hideshow-hook)
+  (show-paren-mode 1)
+  (collapse-1))
 
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'java-mode-hook 'my-java-mode-hook)
