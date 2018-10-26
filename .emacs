@@ -162,6 +162,7 @@
   (local-set-key (kbd "C-e") 'backward-char)
   (local-set-key (kbd "M-h") 'backward-paragraph)
   (local-set-key (kbd "M-t") 'forward-paragraph)
+  (font-lock-add-keywords nil highlightlist)
   (tab-nonsense))
 
 (defun hideshow-hook ()
@@ -264,10 +265,6 @@
 (or (server-running-p)
     (server-start))
 (if (fboundp 'set-scroll-bar-mode) (set-scroll-bar-mode nil))
-(font-lock-add-keywords 'java-mode highlightlist)
-(font-lock-add-keywords 'jde-mode  highlightlist)
-(font-lock-add-keywords 'c-mode    highlightlist)
-(font-lock-add-keywords 'go-mode   highlightlist)
 
 (set-background-color "grey0")
 (set-foreground-color "grey88")
