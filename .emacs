@@ -123,7 +123,7 @@
 (helm-mode t)
 (projectile-global-mode)
 
-(setq backup-directory-alist `(("." . ,"~/emacsbackup/")))
+(setq backup-directory-alist `(("." . ,"~/.emacsbackup/")))
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
 
