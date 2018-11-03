@@ -37,14 +37,17 @@
 
 (defun collapse-1 ()
   "Collases all the go functions with hide-show"
+  (interactive)
   (collapse-level 1))
 
 (defun collapse-2 ()
   "Collases all the go functions with hide-show"
+  (interactive)
   (collapse-level 2))
 
 (defun collapse-3 ()
   "Collases all the go functions with hide-show"
+  (interactive)
   (collapse-level 3))
 
 (defun kill-line-noring ()
