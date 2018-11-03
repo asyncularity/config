@@ -194,6 +194,7 @@
   (common-hook)
   (hideshow-hook)
   (add-hook 'before-save-hook 'gofmt-before-save)  
+  (local-set-key (kbd "C-c C-z") 'collapse-1)
   (collapse-1))
 
 (defun my-c-mode-hook ()
@@ -216,6 +217,7 @@
 (defun my-json-mode-hook ()
   (common-hook)
   (hideshow-hook)
+  (local-set-key (kbd "C-c C-z") 'collapse-1)
   (collapse-1))
 
 (defun my-js2-mode-hook ()
@@ -240,6 +242,7 @@
   (common-hook)
   (hideshow-hook)
   (show-paren-mode 1)
+  (local-set-key (kbd "C-c C-z") 'collapse-1)
   (collapse-1))
 
 (add-hook 'c-mode-hook 'my-c-mode-hook)
