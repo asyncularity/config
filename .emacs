@@ -10,15 +10,15 @@
 (setq load-path (cons (concat my-emacsd "/lisp/jdee-2.4.1/lisp") load-path))
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "google-chrome")
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
-(when window-system (set-exec-path-from-shell-PATH))
+;; (defun set-exec-path-from-shell-PATH ()
+;;   (let ((path-from-shell (replace-regexp-in-string
+;;                           "[ \t\n]*$"
+;;                           ""
+;;                           (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;;     (setenv "PATH" path-from-shell)
+;;     (setq eshell-path-env path-from-shell) ; for eshell users
+;;     (setq exec-path (split-string path-from-shell path-separator))))
+;; (when window-system (set-exec-path-from-shell-PATH))
 
 (require 'id)
 (require 'align)
@@ -138,17 +138,10 @@
 (setq company-echo-delay .1)                          ; remove annoying blinking
 (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
 (setq company-dabbrev-downcase nil)
-
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
-(setq x-select-enable-clipboard nil)
-(setq x-select-enable-primary t)
-
 (setq projectile-use-git-grep t)
-
-(setq ange-ftp-default-user "dmorris")
 (setq add-log-full-name "dmorris")
 (setq ids-creator-id "dmorris")
-
 (setq inhibit-startup-echo-area-message "Asterisk")
 (setq inhibit-startup-message t)
 (setq blick-matching-paren nil)
@@ -156,7 +149,7 @@
 (setq next-line-add-newlines nil)
 (setq completion-ignored-extensions 
       (list
-       "CVS/" ".svn/" ".o" "~" ".bin" ".bak" ".aph" 
+       "CVS/" ".svn/" ".git/" ".o" "~" ".bin" ".bak" ".aph" 
        ".elc" ".idx" ".dvi" ".class" ".lib"
        ".exe" ".com" ".gif" ".jpg" ".GIF"
        ".JPG" ".png" ".bmp" ".psd"))
