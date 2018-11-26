@@ -127,6 +127,8 @@
 ; auto-complete delay
 (setq ac-auto-show-menu .2)
 (setq ac-delay .1)
+(setq ac-menu-height 20)
+(setq ac-ignore-case nil)
 
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq x-select-enable-clipboard nil)
