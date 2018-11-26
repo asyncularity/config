@@ -124,7 +124,7 @@
 (helm-mode t)
 (projectile-global-mode)
 
-(setq backup-directory-alist `(("." . ,"~/.emacs.d/backup/")))
+(setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
 
@@ -194,8 +194,16 @@
 (defun my-go-mode-hook ()
   (common-hook)
   (hideshow-hook)
+  ; http://tleyden.github.io/blog/2014/05/27/configure-emacs-as-a-go-editor-from-scratch-part-2/
+  (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)  
   (local-set-key (kbd "C-c C-z") 'collapse-1)
+  (auto-complete-mode)
+  (local-set-key (kbd "C-<tab>") 'auto-complete)
+  (define-key ac-complete-mode-map (kbd "C-<tab>") 'ac-next)
+  (define-key ac-complete-mode-map (kbd "C-h") 'ac-previous)
+  (define-key ac-complete-mode-map (kbd "C-t") 'ac-next)
+  (require 'go-autocomplete)
   (collapse-1))
 
 (defun my-c-mode-hook ()

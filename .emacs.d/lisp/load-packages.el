@@ -15,13 +15,16 @@
                              ;;			 ("melpa" . "https://melpa.org/packages/")
                              ("melpa-stable" . "https://stable.melpa.org/packages/")))
     (let ((package-list '(ag
+                          auto-complete
                           dash
+                          go-autocomplete
                           go-mode
                           helm
                           helm-ag
                           helm-projectile
                           js2-mode
                           json-mode
+                          exec-path-from-shell
                           magit
                           org-bullets
                           projectile
