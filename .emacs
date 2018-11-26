@@ -10,6 +10,18 @@
 (setq load-path (cons (concat my-emacsd "/lisp/jdee-2.4.1/lisp") load-path))
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "google-chrome")
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+;(setenv "GOPATH" (concat my-home "/go/"))
 
 (require 'id)
 (require 'align)
@@ -198,9 +210,15 @@
   (org-bullets-mode 1))
 
 (defun my-go-mode-hook ()
+  ;; http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/
+  ;; http://tleyden.github.io/blog/2014/05/27/configure-emacs-as-a-go-editor-from-scratch-part-2/
+  ;; needs these packages:
+  ;; go get golang.org/x/tools/cmd/goimports
+  ;; go get golang.org/x/tools/cmd/...
+  ;; go get github.com/rogpeppe/godef
+  ;; go get -u github.com/nsf/gocode
   (common-hook)
   (hideshow-hook)
-  ; http://tleyden.github.io/blog/2014/05/27/configure-emacs-as-a-go-editor-from-scratch-part-2/
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)  
   (local-set-key (kbd "C-c C-z") 'collapse-1)
