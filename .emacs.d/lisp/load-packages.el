@@ -15,9 +15,9 @@
                              ;;			 ("melpa" . "https://melpa.org/packages/")
                              ("melpa-stable" . "https://stable.melpa.org/packages/")))
     (let ((package-list '(ag
-                          auto-complete
+                          company
+                          company-go
                           dash
-                          go-autocomplete
                           go-mode
                           helm
                           helm-ag

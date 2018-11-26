@@ -133,11 +133,11 @@
 (helm-mode t)
 (projectile-global-mode)
 
-; auto-complete delay
-(setq ac-auto-show-menu .2)
-(setq ac-delay .1)
-(setq ac-menu-height 20)
-(setq ac-ignore-case nil)
+(setq company-tooltip-limit 20)                      ; bigger popup window
+(setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
+(setq company-echo-delay .1)                          ; remove annoying blinking
+(setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+(setq company-dabbrev-downcase nil)
 
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq x-select-enable-clipboard nil)
@@ -219,12 +219,21 @@
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)  
   (local-set-key (kbd "C-c C-z") 'collapse-1)
-  (auto-complete-mode)
-  (local-set-key (kbd "C-<tab>") 'auto-complete)
-  (define-key ac-complete-mode-map (kbd "C-<tab>") 'ac-next)
-  (define-key ac-complete-mode-map (kbd "<up>") 'previous-line)
-  (define-key ac-complete-mode-map (kbd "<down>") 'next-line)
-  (require 'go-autocomplete)
+  ;; (auto-complete-mode)
+  ;; (define-key ac-complete-mode-map (kbd "C-<tab>") 'ac-next)
+  ;; (define-key ac-complete-mode-map (kbd "<up>") 'previous-line)
+  ;; (define-key ac-complete-mode-map (kbd "<down>") 'next-line)
+  ;; (require 'go-autocomplete)
+  ;; (set (make-local-variable 'company-backends) '(company-go))
+  (setq company-backends '(company-go))
+  (require 'company)
+  (require 'company-go)
+  (company-mode)
+  (define-key company-active-map (kbd "C-<tab>") 'company-select-next)
+  (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
+  ;; (define-key company-active-map (kbd "<up>") 'previous-line)
+  ;; (define-key company-active-map (kbd "<down>") 'next-line)
+  (local-set-key (kbd "C-<tab>") 'company-complete)
   (collapse-1))
 
 (defun my-c-mode-hook ()
@@ -310,6 +319,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blue ((t (:foreground "skyblue"))))
+ '(company-preview ((t (:foreground "darkgray" :underline t))))
+ '(company-preview-common ((t (:inherit company-preview))))
+ '(company-tooltip ((t (:background "lightgray" :foreground "black"))))
+ '(company-tooltip-common ((((type x)) (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
+ '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
+ '(company-tooltip-selection ((t (:background "steelblue" :foreground "white"))))
  '(custom-rogue-face ((t (:background "black" :foreground "blue4"))))
  '(font-lock-comment-face ((t (:foreground "Grey40"))))
  '(font-lock-constant-face ((((class color) (background dark)) (:foreground "#ABC"))))
