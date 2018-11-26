@@ -227,6 +227,7 @@
   ;; (define-key company-active-map (kbd "<up>") 'previous-line)
   ;; (define-key company-active-map (kbd "<down>") 'next-line)
   (local-set-key (kbd "C-<tab>") 'company-complete)
+  ;; (load-file (concat (getenv "GOPATH") "/src/golang.org/x/tools/cmd/guru/go-guru.el"))
   (collapse-1))
 
 (defun my-c-mode-hook ()
