@@ -124,6 +124,10 @@
 (helm-mode t)
 (projectile-global-mode)
 
+; auto-complete delay
+(setq ac-auto-show-menu .2)
+(setq ac-delay .1)
+
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
@@ -201,8 +205,8 @@
   (auto-complete-mode)
   (local-set-key (kbd "C-<tab>") 'auto-complete)
   (define-key ac-complete-mode-map (kbd "C-<tab>") 'ac-next)
-  (define-key ac-complete-mode-map (kbd "C-h") 'ac-previous)
-  (define-key ac-complete-mode-map (kbd "C-t") 'ac-next)
+  (define-key ac-complete-mode-map (kbd "<up>") 'previous-line)
+  (define-key ac-complete-mode-map (kbd "<down>") 'next-line)
   (require 'go-autocomplete)
   (collapse-1))
 
