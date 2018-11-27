@@ -76,7 +76,8 @@
 (define-key global-map (kbd "C-c C-u")   'uncomment-region)
 (define-key global-map (kbd "M-r")       'query-replace-regexp)
 (define-key global-map (kbd "M-\\")      'indent-region)
-(define-key global-map (kbd "C-<tab>")   'dabbrev-expand)
+;;(define-key global-map (kbd "C-<tab>")   'dabbrev-expand)
+;;(define-key global-map (kbd "C-<tab>")   'company-complete)
 (define-key global-map (kbd "C-x C-r")   'revert-buffer)
 (define-key global-map (kbd "C-x C-e")   'call-last-kbd-macro)
 (define-key global-map (kbd "C-p")       'undo)
@@ -122,6 +123,10 @@
 ;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 ;;(define-key helm-map (kbd "C-j") 'helm-execute-persistent-action)
 
+;; company-active-map
+(define-key company-active-map (kbd "<tab>") 'company-complete-selection)
+(define-key company-active-map (kbd "<return>") 'newline)
+
 (eval-after-load 'projectile
   '(progn
      (define-key projectile-command-map (kbd "b") 'helm-projectile-switch-buffer)
@@ -132,12 +137,15 @@
 
 (helm-mode t)
 (projectile-global-mode)
+(add-hook 'after-init-hook 'global-company-mode)
 
 (setq company-tooltip-limit 20)                      ; bigger popup window
-(setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
-(setq company-echo-delay .1)                          ; remove annoying blinking
+(setq company-idle-delay .1)                         ; decrease delay before autocompletion popup shows
+(setq company-echo-delay 0)                         ; remove annoying blinking
 (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
 (setq company-dabbrev-downcase nil)
+(setq company-dabbrev-code-everywhere t)
+(setq company-dabbrev-code-modes t)
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq projectile-use-git-grep t)
 (setq add-log-full-name "dmorris")
@@ -212,22 +220,8 @@
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)  
   (local-set-key (kbd "C-c C-z") 'collapse-1)
-  ;; (auto-complete-mode)
-  ;; (define-key ac-complete-mode-map (kbd "C-<tab>") 'ac-next)
-  ;; (define-key ac-complete-mode-map (kbd "<up>") 'previous-line)
-  ;; (define-key ac-complete-mode-map (kbd "<down>") 'next-line)
-  ;; (require 'go-autocomplete)
-  ;; (set (make-local-variable 'company-backends) '(company-go))
-  (setq company-backends '(company-go))
-  (require 'company)
-  (require 'company-go)
-  (company-mode)
-  (define-key company-active-map (kbd "C-<tab>") 'company-select-next)
-  (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
-  ;; (define-key company-active-map (kbd "<up>") 'previous-line)
-  ;; (define-key company-active-map (kbd "<down>") 'next-line)
-  (local-set-key (kbd "C-<tab>") 'company-complete)
-  ;; (load-file (concat (getenv "GOPATH") "/src/golang.org/x/tools/cmd/guru/go-guru.el"))
+  (make-local-variable 'company-backends)
+  (add-to-list 'company-backends 'company-go)
   (collapse-1))
 
 (defun my-c-mode-hook ()

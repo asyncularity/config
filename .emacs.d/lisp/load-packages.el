@@ -45,6 +45,8 @@
     (require 'helm-files)
     (require 'helm-projectile)
     (require 'projectile)
+    (require 'company)
+    (require 'company-go)
     )
   )
 
