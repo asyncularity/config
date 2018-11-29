@@ -18,6 +18,7 @@
                           company
                           company-go
                           dash
+                          flycheck
                           go-mode
                           helm
                           helm-ag

@@ -138,6 +138,7 @@
 (helm-mode t)
 (projectile-global-mode)
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook 'global-flycheck-mode)
 
 (setq company-tooltip-limit 20)                      ; bigger popup window
 (setq company-idle-delay .1)                         ; decrease delay before autocompletion popup shows
@@ -148,6 +149,7 @@
 (setq company-dabbrev-code-modes t)
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq projectile-use-git-grep t)
+(setq flycheck-python-pylint-executable "pylint3")
 (setq add-log-full-name "dmorris")
 (setq ids-creator-id "dmorris")
 (setq inhibit-startup-echo-area-message "Asterisk")
