@@ -218,6 +218,8 @@
   ;; go get github.com/rogpeppe/godef
   ;; go get -u github.com/nsf/gocode
   (common-hook)
+  (local-set-key (kbd "C-M-h")   'beginning-of-defun)
+  (local-set-key (kbd "C-M-t")   'end-of-defun)
   (hideshow-hook)
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)  
