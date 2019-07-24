@@ -18,7 +18,8 @@ export GOBIN=${GOPATH}/bin
 
 path=($path /bin /usr/bin /usr/local/bin)
 path=($path /sbin /usr/sbin /usr/local/sbin)
-path=($path $GOBIN)
+path=(/usr/local/go/bin $path)
+path=($GOBIN $path)
 
 ulimit -c unlimited
 umask 002
@@ -87,6 +88,7 @@ alias "deb-apts"="apt-cache search"
 alias "deb-aptsh"="apt-cache show $@"
 alias "deb-pkg-size"="dpkg-query -W --showformat='\${Installed-Size} \${Package}\n' | sort -n -r"
 alias delchar="stty -a | grep ' erase' | sed 's/.* erase = \(.?*\); .*/\1/'"
+alias fixhistory="cd ~/ ; mv .zsh_history .zsh_history_bad ; strings .zsh_history_bad > .zsh_history"
 
 if [ -f "`which dog 2>&1`" ]; then
     alias cat="dog"

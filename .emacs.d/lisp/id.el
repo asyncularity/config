@@ -1,6 +1,11 @@
-;; $Id: id.el,v 1.02 2003/03/11 14:54:27 dmorris Exp $
+;;; id.el --- functions to manage id tags
+
+;;; Commentary:
 
 ;(add-hook 'write-file-hooks 'update-ids)
+
+(defvar ids-creator-id "anonymous"
+  "*Customizable creator id for update-ids hook. (\\[insert-id])")
 
 (defun insert-id ()
   "Inserts an ID like $I d: filename.c,v 0.03 1999/07/31 00:45:19 dmorris Exp
@@ -29,9 +34,6 @@ the current time/date."
     (insert-id)
     (insert " */")
 ))
-
-(defvar ids-creator-id "anonymous"
-  "*Customizable creator id for update-ids hook. (\\[insert-id])")
 
 (defun update-ids ()
   "Find any $I d: filename.c,v 0.03 1999/07/31 00:45:19 tom7 Exp $ strings

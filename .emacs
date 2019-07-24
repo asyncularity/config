@@ -1,24 +1,16 @@
-;;$Id: .emacs,v 1.00 2018/10/17 21:45:17 dmorris Exp $
-
+; $Id: .emacs,v 1.00 2019/07/23 20:35:12 dmorris Exp $
 (package-initialize)
-(require 'cl)
 (require 'package)
 
+(defvar my-home)
+(defvar my-emacsd)
+(defvar browse-url-generic-program)
 (setq my-home (expand-file-name (concat "~" (or (getenv "SUDO_USER") (getenv "USER")))))
 (setq my-emacsd (concat my-home "/.emacs.d/"))
 (setq load-path (cons (concat my-emacsd "/lisp") load-path))
 (setq load-path (cons (concat my-emacsd "/lisp/jdee-2.4.1/lisp") load-path))
-(setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "google-chrome")
-;; (defun set-exec-path-from-shell-PATH ()
-;;   (let ((path-from-shell (replace-regexp-in-string
-;;                           "[ \t\n]*$"
-;;                           ""
-;;                           (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-;;     (setenv "PATH" path-from-shell)
-;;     (setq eshell-path-env path-from-shell) ; for eshell users
-;;     (setq exec-path (split-string path-from-shell path-separator))))
-;; (when window-system (set-exec-path-from-shell-PATH))
+(setq browse-url-browser-function 'browse-url-generic)
 
 (require 'id)
 (require 'align)
@@ -32,8 +24,8 @@
       (defun font-exists-p (font) "check if font exists" (if (null (x-list-fonts font)) nil t))
       (if (font-exists-p "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
           (set-default-font "-*-clean-bold-*-*-*-12-*-*-*-*-*-*-*")
-        (if (font-exists-p "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")
-            (set-default-font "-misc-fixed-medium-r-normal--13-*-100-100-c-70-iso8859-1")))))
+        (if (font-exists-p "-misc-fixed-medium-r-normal--12-*-100-100-c-70-iso8859-1")
+            (set-default-font "-misc-fixed-medium-r-normal--12-*-100-100-c-70-iso8859-1")))))
 
 ;;; KEYBINDINGS ;;;
 
@@ -55,12 +47,13 @@
 (define-key global-map (kbd "C-f") 'kill-ring-save)
 (define-key global-map (kbd "M-f") 'kill-region)
 (define-key global-map (kbd "M-k") 'kill-region)
-(define-key global-map (kbd "C-k") 'kill-line-noring) 
+(define-key global-map (kbd "C-k") 'kill-line-noring)
 (define-key global-map (kbd "M-y") 'helm-show-kill-ring)
 
 ;; Search
 (define-key global-map (kbd "C-s") 'isearch-forward)
 (define-key global-map (kbd "M-s") 'helm-projectile-grep)
+(define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
 
 ;; Other stuff
 (define-key global-map (kbd "C-<backspace>") 'backward-delete-word-noring)
@@ -69,7 +62,8 @@
 (define-key global-map (kbd "C-c m")     'insert-id)
 (define-key global-map (kbd "C-c v")     'insert-copyright)
 (define-key global-map (kbd "C-b")       'helm-mini)
-(define-key global-map (kbd "C-n C-f")   'helm-find-files)
+(define-key global-map (kbd "C-n C-f")   'find-file)
+;;(define-key global-map (kbd "C-n C-f")   'helm-find-files)
 (define-key global-map (kbd "C-n g")     'magit-status)
 (define-key global-map (kbd "C-n c")     'org-capture)
 (define-key global-map (kbd "C-c C-c")   'comment-region)
@@ -102,6 +96,10 @@
 (define-key global-map (kbd "C-x C-o") nil)
 (define-key global-map (kbd "C-x C-n") nil)
 
+;; scale
+(define-key global-map (kbd "C-M-=") 'default-text-scale-increase)
+(define-key global-map (kbd "C-M--") 'default-text-scale-decrease)
+
 ;; isearch mode-map
 (define-key isearch-mode-map (kbd "C-y") 'clipboard-yank)
 (define-key isearch-mode-map (kbd "C-j") (lambda () "" (interactive) (progn (end-of-line) (isearch-exit))))
@@ -115,13 +113,15 @@
 (define-key isearch-mode-map (kbd "M-u") (lambda () "" (interactive) (progn (forward-word 1) (isearch-exit))))
 
 ;; helm mode-map
-(define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
+;;(define-key helm-find-files-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "M-e") 'backward-word)
 (define-key helm-find-files-map (kbd "M-u") 'forward-word)
+(define-key helm-find-files-map (kbd "C-n") 'Control-X-prefix)
 (define-key helm-find-files-map (kbd "C-<backspace>") 'backward-delete-word-noring)
-;;(define-key helm-map (kbd "<tab>") 'helm-maybe-exit-minibuffer)
+(define-key helm-map (kbd "C-n") 'Control-X-prefix)
 ;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-;;(define-key helm-map (kbd "C-j") 'helm-execute-persistent-action)
+;;(define-key helm-map (kbd "<tab>") 'helm-execute-next-source)
+;;(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 
 ;; company-active-map
 (define-key company-active-map (kbd "<tab>") 'company-complete-selection)
@@ -150,6 +150,7 @@
 (setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq projectile-use-git-grep t)
 (setq flycheck-python-pylint-executable "pylint3")
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 (setq add-log-full-name "dmorris")
 (setq ids-creator-id "dmorris")
 (setq inhibit-startup-echo-area-message "Asterisk")
@@ -157,9 +158,9 @@
 (setq blick-matching-paren nil)
 (setq enable-local-variables 'query)
 (setq next-line-add-newlines nil)
-(setq completion-ignored-extensions 
+(setq completion-ignored-extensions
       (list
-       "CVS/" ".svn/" ".git/" ".o" "~" ".bin" ".bak" ".aph" 
+       "CVS/" ".svn/" ".git/" ".o" "~" ".bin" ".bak" ".aph"
        ".elc" ".idx" ".dvi" ".class" ".lib"
        ".exe" ".com" ".gif" ".jpg" ".GIF"
        ".JPG" ".png" ".bmp" ".psd"))
@@ -258,7 +259,6 @@
         c-basic-offset 4)
   (c-toggle-auto-state 0)
   (c-toggle-hungry-state 1)
-  (set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
   (define-key js2-mode-map (kbd "<return>") 'newline-and-indent)
   (define-key js2-mode-map (kbd "<backspace>") 'c-electric-backspace)
   (if (featurep 'js2-highlight-vars)
@@ -276,6 +276,9 @@
   (local-set-key (kbd "C-c C-z") 'collapse-1)
   (collapse-1))
 
+(defun my-yaml-mode-hook ()
+  (common-hook))
+
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 (add-hook 'sh-mode-hook 'my-sh-mode-hook)
@@ -285,6 +288,7 @@
 (add-hook 'go-mode-hook 'my-go-mode-hook)
 (add-hook 'json-mode-hook 'my-json-mode-hook)
 (add-hook 'org-mode-hook 'my-org-mode-hook)
+(add-hook 'yaml-mode-hook 'my-yaml-mode-hook)
 
 (setq auto-mode-alist (cons '("\.java$" . java-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\.js$" . js2-mode) auto-mode-alist))

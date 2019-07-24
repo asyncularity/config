@@ -29,6 +29,9 @@
                           magit
                           org-bullets
                           projectile
+                          yaml-mode
+                          php-mode
+			  default-text-scale
                           )))
       (package-initialize)
       ;; fetch the list of packages available
