@@ -22,6 +22,7 @@
                           go-mode
                           helm
                           helm-ag
+                          helm-gtags
                           helm-projectile
                           js2-mode
                           json-mode

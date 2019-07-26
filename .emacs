@@ -54,6 +54,7 @@
 (define-key global-map (kbd "C-s") 'isearch-forward)
 (define-key global-map (kbd "M-s") 'helm-projectile-grep)
 (define-key projectile-mode-map (kbd "M-p") 'projectile-command-map)
+(define-key global-map (kbd "M-.") 'helm-gtags-dwim)
 
 ;; Other stuff
 (define-key global-map (kbd "C-<backspace>") 'backward-delete-word-noring)
@@ -147,7 +148,6 @@
 (setq company-dabbrev-downcase nil)
 (setq company-dabbrev-code-everywhere t)
 (setq company-dabbrev-code-modes t)
-(setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
 (setq projectile-use-git-grep t)
 (setq flycheck-python-pylint-executable "pylint3")
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
@@ -292,6 +292,15 @@
 
 (setq auto-mode-alist (cons '("\.java$" . java-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\.js$" . js2-mode) auto-mode-alist))
+
+;; autosave setup
+(setq backup-directory-alist `((".*" . ,"~/.emacs.d/backup/")))
+(setq auto-save-file-name-transforms `((".*" "~/.emacs.d/backup/" t)))
+
+;; disable lockfiles
+;; There is no ability to put lockfiles in a tmpdir, only pwd
+;; so disable so it doesnt litter local directory
+(setq create-lockfiles nil)
 
 (setq org-capture-templates
  '(("t" "Todo" entry (file+headline "~/todo.org" "Uncategorized")

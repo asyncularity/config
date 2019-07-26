@@ -16,8 +16,8 @@ export NO_AT_BRIDGE=1
 export GOPATH=${HOME}/go
 export GOBIN=${GOPATH}/bin
 
-path=($path /bin /usr/bin /usr/local/bin)
-path=($path /sbin /usr/sbin /usr/local/sbin)
+path=($path /usr/local/bin /bin /usr/bin)
+path=($path /usr/local/sbin /sbin /usr/sbin)
 path=(/usr/local/go/bin $path)
 path=($GOBIN $path)
 
