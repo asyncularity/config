@@ -18,6 +18,8 @@
                           company
                           company-go
                           dash
+                          default-text-scale
+                          exec-path-from-shell
                           flycheck
                           go-mode
                           helm
@@ -26,13 +28,11 @@
                           helm-projectile
                           js2-mode
                           json-mode
-                          exec-path-from-shell
                           magit
                           org-bullets
+                          php-mode
                           projectile
                           yaml-mode
-                          php-mode
-			  default-text-scale
                           )))
       (package-initialize)
       ;; fetch the list of packages available

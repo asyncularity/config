@@ -1,4 +1,3 @@
-*.com
 *.dll
 *.exe
 *.o
@@ -30,4 +29,3 @@ GRTAGS
 GSYMS
 GTAGS
 .sass-cache
-
