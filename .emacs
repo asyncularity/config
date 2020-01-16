@@ -274,6 +274,7 @@
   (hideshow-hook)
   (show-paren-mode 1)
   (local-set-key (kbd "C-c C-z") 'collapse-1)
+  (local-set-key (kbd "C-c C-c") 'comment-region)
   (collapse-1))
 
 (defun my-yaml-mode-hook ()

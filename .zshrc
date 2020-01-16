@@ -20,6 +20,7 @@ path=($path /usr/local/bin /bin /usr/bin)
 path=($path /usr/local/sbin /sbin /usr/sbin)
 path=(/usr/local/go/bin $path)
 path=($GOBIN $path)
+path=(~/.local/bin)
 
 ulimit -c unlimited
 umask 002
@@ -75,6 +76,7 @@ alias du1='du -hs *(/)' ## du with depth 1
 alias ssh='ssh -X -A -o "StrictHostKeyChecking=no"'
 alias al="alias|less"
 alias more="less"
+alias monoff="/bin/sh -c \"sleep 1 && xset dpms force off\""
 alias bindings='egrep "bindkey" ~/.zshrc| egrep -v "grep|stty" | \more'
 alias noupper='rename "y/A-Z/a-z/"'
 alias nospace='rename "s/ /_/g"'

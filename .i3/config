@@ -171,3 +171,7 @@ focus_follows_mouse no
 
 #exec --no-startup-id xrandr --output DP-0 --left-of DVI-I-1
 
+
+for_window [class="^.*"] border pixel 2
+
+exec_always --no-startup-id /usr/bin/compton --config /home/dmorris/.config/compton.conf
