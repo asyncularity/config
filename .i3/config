@@ -174,4 +174,11 @@ focus_follows_mouse no
 
 for_window [class="^.*"] border pixel 2
 
+# do not focus image popups
+# use xprop to discover window properties to add focus & floating treatment
+#for_window [class="Display-im6.q16"] floating enable no_focus 
+no_focus [class="Display-im6.q16"]
+
+# start compton for transparency
 exec_always --no-startup-id /usr/bin/compton --config /home/dmorris/.config/compton.conf
+

@@ -150,6 +150,7 @@
 (setq company-dabbrev-code-modes t)
 (setq projectile-use-git-grep t)
 (setq flycheck-python-pylint-executable "pylint3")
+(setq python-indent-guess-indent-offset nil) ; default is t
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 (setq add-log-full-name "dmorris")
 (setq ids-creator-id "dmorris")

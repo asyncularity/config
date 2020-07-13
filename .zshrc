@@ -20,7 +20,8 @@ path=($path /usr/local/bin /bin /usr/bin)
 path=($path /usr/local/sbin /sbin /usr/sbin)
 path=(/usr/local/go/bin $path)
 path=($GOBIN $path)
-path=(~/.local/bin)
+path=($path ~/.local/bin)
+path=($path ~/anaconda3/bin)
 
 ulimit -c unlimited
 umask 002
