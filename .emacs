@@ -149,7 +149,8 @@
 (setq company-dabbrev-code-everywhere t)
 (setq company-dabbrev-code-modes t)
 (setq projectile-use-git-grep t)
-(setq flycheck-python-pylint-executable "pylint3")
+(setq flycheck-python-pylint-executable "/usr/bin/pylint3")
+(setq flycheck-python-flake8-executable nil)
 (setq python-indent-guess-indent-offset nil) ; default is t
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 (setq add-log-full-name "dmorris")
@@ -276,6 +277,7 @@
   (show-paren-mode 1)
   (local-set-key (kbd "C-c C-z") 'collapse-1)
   (local-set-key (kbd "C-c C-c") 'comment-region)
+  (setq flycheck-checker 'python-pylint)
   (collapse-1))
 
 (defun my-yaml-mode-hook ()
